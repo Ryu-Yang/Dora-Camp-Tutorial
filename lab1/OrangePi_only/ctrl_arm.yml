@@ -13,8 +13,8 @@ nodes:
     outputs:
       - text
 
-  - id: trans-cli
-    path: trans_cli.py
+  - id: trans-cmd
+    path: trans_cmd.py
     inputs:
       text: key-interpolation/text
     outputs:
@@ -29,12 +29,12 @@ nodes:
   - id: arm
     path: gen72.py
     inputs:
-      movec: trans-cli/movec
-      claw: trans-cli/claw
-      save: trans-cli/save
-      clear: trans-cli/clear
-      begin: trans-cli/begin
-      stop: trans-cli/stop
-      goto: trans-cli/goto
+      movec: trans-cmd/movec
+      claw: trans-cmd/claw
+      save: trans-cmd/save
+      clear: trans-cmd/clear
+      begin: trans-cmd/begin
+      stop: trans-cmd/stop
+      goto: trans-cmd/goto
     env:
       ROBOT_IP: 192.168.1.18  # gen72 机械臂默认IP
