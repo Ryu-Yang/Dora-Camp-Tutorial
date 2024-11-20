@@ -40,4 +40,4 @@ nodes:
       stop: trans-cmd/stop
       goto: trans-cmd/goto
     env:
-      ROBOT_IP: 192.168.1.18
+      ROBOT_IP: 192.168.1.18  # gen72 机械臂默认IP
