@@ -1,0 +1,43 @@
+nodes:
+  - id: opencv
+    path: opencv.py
+    inputs:
+      key-interval: dora/timer/millis/10
+      error-interval: dora/timer/millis/500
+    outputs:
+      - error
+      - key
+
+  - id: key-interpolation
+    path: key_interpolation.py
+    inputs:
+      keyboard: opencv/key
+    outputs:
+      - text
+
+  - id: trans-cmd
+    path: trans_cmd.py
+    inputs:
+      text: key-interpolation/text
+      error: opencv/error
+    outputs:
+      - movec
+      - claw
+      - save
+      - clear
+      - begin
+      - stop
+      - goto
+
+  - id: arm
+    path: gen72.py
+    inputs:
+      movec: trans-cmd/movec
+      claw: trans-cmd/claw
+      save: trans-cmd/save
+      clear: trans-cmd/clear
+      begin: trans-cmd/begin
+      stop: trans-cmd/stop
+      goto: trans-cmd/goto
+    env:
+      ROBOT_IP: 192.168.1.18

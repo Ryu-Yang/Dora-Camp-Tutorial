@@ -1,0 +1,122 @@
+nodes:
+#  - id: arm
+#    path: gen72.py
+#    _unstable_deploy:
+#      machine: orangepi
+#    inputs:
+#      movec: trans-cli/movec
+#      # movej: arm-interpolation/movej
+#      claw: trans-cli/claw
+#      save: trans-cli/save
+#      clear: trans-cli/clear
+#      begin: trans-cli/begin
+#      stop: trans-cli/stop
+#      goto: trans-cli/goto
+#    env:
+#      ROBOT_IP: 192.168.1.18
+
+  - id: keyboard-listener
+    path: keyboard.py
+    inputs:
+      tick: dora/timer/millis/10
+    outputs:
+      - char
+
+  - id: key-interpolation
+    path: key_interpolation.py
+    inputs:
+      keyboard: keyboard-listener/char
+    outputs:
+      - text
+
+  - id: trans-cli
+    path: trans_cli.py
+    inputs:
+      text: key-interpolation/text
+    outputs:
+      - movec
+      - claw
+      - save
+      - clear
+      - begin
+      - stop
+      - goto
+
+
+
+  # - id: arm-interpolation
+  #   path: arm_interpolation.py
+  #   inputs:
+  #     keyboard: trans_cli/text
+  #   outputs:
+  #     - movec
+  #     - movej
+  #     - claw
+  #     - go_to
+  #     - save
+
+  # - id: camera1 # Run on car
+  #   # build: pip install opencv-video-capture
+  #   path: opencv-video-capture
+  #   # _unstable_deploy:
+  #   #   machine: ec7
+  #   inputs:
+  #     tick: dora/timer/millis/200
+  #   outputs:
+  #     - image
+  #   env:
+  #     CAPTURE_PATH: 0
+  #     IMAGE_WIDTH: 640
+  #     IMAGE_HEIGHT: 480
+  #     ENCODING: jpeg
+  #     FLIP: VERTICAL
+
+  # - id: camera2 # Run on car
+  #   # build: pip install opencv-video-capture
+  #   path: opencv-video-capture
+  #   # _unstable_deploy:
+  #   #   machine: ec7
+  #   inputs:
+  #     tick: dora/timer/millis/200
+  #   outputs:
+  #     - image
+  #   env:
+  #     CAPTURE_PATH: 2
+  #     IMAGE_WIDTH: 640
+  #     IMAGE_HEIGHT: 480
+  #     ENCODING: jpeg
+  #     FLIP: VERTICAL
+
+  # - id: plot
+  #   # build: |
+  #   # wget -nc https://github.com/dora-rs/gosim-2024/releases/download/v0.0.1/rerun
+  #   # wget -nc https://github.com/dora-rs/gosim-2024/releases/download/v0.0.1/dora-rerun
+  #   path: dora-rerun
+  #   inputs:
+  #     image_1:
+  #       source: camera1/image
+  #       queue_size: 1
+  #     image_2:
+  #       source: camera2/image
+  #       queue_size: 1
+  #     textlog_vlm: dora-qwenvl-recorder/text
+  #   env:
+  #     IMAGE_WIDTH: 640
+  #     IMAGE_HEIGHT: 480
+  #     RERUN_MEMORY_LIMIT: 25%
+
+  # - id: dora-qwenvl-recorder
+  #   path: llama-factory-recorder
+  #   inputs:
+  #     image_1:
+  #       source: camera1/image
+  #       queue_size: 1
+  #     image_2:
+  #       source: camera2/image
+  #       queue_size: 1
+  #     ground_truth: key-interpolation/text
+  #   outputs:
+  #     - text
+  #   env:
+  #     DEFAULT_QUESTION: Respond with right, left, forward, backward,stop to move to the red line
+  #     LLAMA_FACTORY_ROOT_PATH: /home/peter/Documents/work/LLaMA-Factory

@@ -1,0 +1,40 @@
+nodes:
+  - id: keyboard-listener
+    path: keyboard.py
+    inputs:
+      tick: dora/timer/millis/10
+    outputs:
+      - char
+
+  - id: key-interpolation
+    path: key_interpolation.py
+    inputs:
+      keyboard: keyboard-listener/char
+    outputs:
+      - text
+
+  - id: trans-cli
+    path: trans_cli.py
+    inputs:
+      text: key-interpolation/text
+    outputs:
+      - movec
+      - claw
+      - save
+      - clear
+      - begin
+      - stop
+      - goto
+  
+  - id: arm
+    path: gen72.py
+    inputs:
+      movec: trans-cli/movec
+      claw: trans-cli/claw
+      save: trans-cli/save
+      clear: trans-cli/clear
+      begin: trans-cli/begin
+      stop: trans-cli/stop
+      goto: trans-cli/goto
+    env:
+      ROBOT_IP: 192.168.1.18  # gen72 机械臂默认IP
