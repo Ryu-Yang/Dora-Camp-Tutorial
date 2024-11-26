@@ -1,0 +1,142 @@
+# Run the following command on pc:
+#   pip install dora-keyboard==v0.3.7rc0
+#   pip install opencv-python
+#   pip install dora-qwenvl
+#   pip install llama-factory-recorder
+#   cargo install rerun-cli --locked
+#   cd dora\node-hub\dora-rerun
+#   cargo install --path .
+
+
+# Run the following command on pi:
+#   pip install opencv-video-capture
+#   pip install dora-gen72
+
+
+nodes:
+  - id: keyboard-listener
+    path: dora-keyboard
+    inputs:
+      tick: dora/timer/millis/10
+    outputs:
+      - char
+    env:
+      DISPLAY: :0
+
+  - id: key-interpolation
+    path: key_interpolation.py
+    inputs:
+      keyboard: keyboard-listener/char
+    outputs:
+      - text
+
+  - id: camera1
+    _unstable_deploy:
+      machine: pi
+    path: opencv-video-capture
+    inputs:
+      tick: dora/timer/millis/200
+    outputs:
+      - image
+    env:
+      CAPTURE_PATH: 2
+      IMAGE_WIDTH: 640
+      IMAGE_HEIGHT: 480
+      ENCODING: jpeg
+
+  - id: camera2
+    _unstable_deploy:
+      machine: pi
+    path: opencv-video-capture
+    inputs:
+      tick: dora/timer/millis/200
+    outputs:
+      - image
+    env:
+      CAPTURE_PATH: 0
+      IMAGE_WIDTH: 640
+      IMAGE_HEIGHT: 480
+      ENCODING: jpeg
+
+  - id: dora-qwenvl
+    path: dora-qwenvl
+    inputs:
+      image_1:
+        source: camera1/image
+        queue_size: 1
+      image_2:
+        source: camera2/image
+        queue_size: 1
+      tick: dora/timer/millis/3000
+    outputs:
+      - text
+      - tick
+    env:
+      DEFAULT_QUESTION: Respond with arm left, arm right, arm up, arm down, open, close, to grab the bottle.
+      USE_MODELSCOPE_HUB: True
+      MODEL_NAME_OR_PATH: E:\Repositories\Qwen2-VL-7B-Instruct-GPTQ-Int8
+      ADAPTER_PATH: E:\Work\LLaMA-Factory\my-qwen2_vl-7b-int8\lora\sft
+
+  - id: arm-interpolation
+    path: arm_interpolation.py
+    inputs:
+      keyboard: dora-qwenvl/tick
+      text: key-interpolation/text
+    outputs:
+      - movec
+      - movej
+      - claw
+      - save
+      - go_to
+
+  - id: arm
+    path: dora-gen72
+    _unstable_deploy:
+      machine: pi
+    inputs:
+      movec: arm-interpolation/movec
+      movej: arm-interpolation/movej
+      claw: arm-interpolation/claw
+      save: arm-interpolation/save
+      go_to: arm-interpolation/go_to
+    env:
+      ROBOT_IP: 192.168.1.18
+
+#  - id: chassis
+#    path: robot
+#    _unstable_deploy:
+#      machine: pi
+#    inputs:
+#      text: dora-qwenvl/tick
+
+  - id: plot
+    path: dora-rerun
+    inputs:
+      image_1:
+        source: camera1/image
+        queue_size: 1
+      image_2:
+        source: camera2/image
+        queue_size: 1
+      textlog_vlm: dora-qwenvl/tick
+    env:
+      IMAGE_WIDTH: 640
+      IMAGE_HEIGHT: 480
+      RERUN_MEMORY_LIMIT: 50%
+      README: |
+        To control the robot, use the following keys:
+        - w: move forward
+        - s: move backward
+        - a: move left
+        - d: move right
+        - q: stop
+        - r: open gripper
+        - t: close gripper
+        - h: move arm left
+        - k: move arm right
+        - y: move arm down
+        - i: move arm up
+        - u: move arm forward
+        - j: move arm backward
+        - v: go home
+        - b: save home
