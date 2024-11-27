@@ -9,7 +9,7 @@ import sys
 
 
 # define
-SPEED = 50
+SPEED = 30
 SAVED_POSE_PATH = "./pose_library.json"
 ROBOT_IP = os.getenv("ROBOT_IP", "192.168.1.18")
 MIN_Z = float(os.getenv("MIN_Z", "0.0"))
