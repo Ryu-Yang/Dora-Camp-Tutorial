@@ -1,32 +1,36 @@
 # Run the following command on pc:
-#   pip install dora-keyboard==v0.3.7rc0
-#   pip install opencv-python
-#   pip install dora-qwenvl
 #   pip install llama-factory-recorder
+#   pip install dora-qwenvl
+#   # 不用这个conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia
+#   pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124 --default-timeout=3600
+#   pip install transformers
+#   pip install qwen-vl-utils
+#   pip install optimum
+#   pip install auto-gptq
+
+
 #   cargo install rerun-cli --locked
 #   cd dora\node-hub\dora-rerun
 #   cargo install --path .
 
 
 # Run the following command on pi:
+#   pip install opencv-python
 #   pip install opencv-video-capture
-#   pip install dora-gen72
 
 
 nodes:
-  - id: keyboard-listener
-    path: dora-keyboard
+  - id: key-listener
+    path: key_listener.py
     inputs:
       tick: dora/timer/millis/10
     outputs:
       - char
-    env:
-      DISPLAY: :0
 
-  - id: key-interpolation
-    path: key_interpolation.py
+  - id: key-text
+    path: key_text.py
     inputs:
-      keyboard: keyboard-listener/char
+      keyboard: key-listener/char
     outputs:
       - text
 
@@ -67,47 +71,15 @@ nodes:
       image_2:
         source: camera2/image
         queue_size: 1
-      tick: dora/timer/millis/3000
+      tick: dora/timer/millis/2000
     outputs:
       - text
       - tick
     env:
-      DEFAULT_QUESTION: Respond with arm left, arm right, arm up, arm down, open, close, to grab the bottle.
+      DEFAULT_QUESTION: Respond with arm forward, arm backward, arm left, arm right, arm up, arm down, claw open, claw close, to grab the bottle.
       USE_MODELSCOPE_HUB: True
       MODEL_NAME_OR_PATH: E:\Repositories\Qwen2-VL-7B-Instruct-GPTQ-Int8
       ADAPTER_PATH: E:\Work\LLaMA-Factory\my-qwen2_vl-7b-int8\lora\sft
-
-  - id: arm-interpolation
-    path: arm_interpolation.py
-    inputs:
-      keyboard: dora-qwenvl/tick
-      text: key-interpolation/text
-    outputs:
-      - movec
-      - movej
-      - claw
-      - save
-      - go_to
-
-  - id: arm
-    path: dora-gen72
-    _unstable_deploy:
-      machine: pi
-    inputs:
-      movec: arm-interpolation/movec
-      movej: arm-interpolation/movej
-      claw: arm-interpolation/claw
-      save: arm-interpolation/save
-      go_to: arm-interpolation/go_to
-    env:
-      ROBOT_IP: 192.168.1.18
-
-#  - id: chassis
-#    path: robot
-#    _unstable_deploy:
-#      machine: pi
-#    inputs:
-#      text: dora-qwenvl/tick
 
   - id: plot
     path: dora-rerun
@@ -125,18 +97,57 @@ nodes:
       RERUN_MEMORY_LIMIT: 50%
       README: |
         To control the robot, use the following keys:
-        - w: move forward
-        - s: move backward
-        - a: move left
-        - d: move right
-        - q: stop
-        - r: open gripper
-        - t: close gripper
-        - h: move arm left
-        - k: move arm right
+        - w: move chassis forward
+        - s: move chassis backward
+        - a: move chassis left
+        - d: move chassis right
+        - q: close gripper
+        - e: open gripper
+        - t: move arm forward
+        - g: move arm backward
+        - f: move arm left
+        - h: move arm right
+        - r: move arm up
         - y: move arm down
-        - i: move arm up
-        - u: move arm forward
-        - j: move arm backward
-        - v: go home
-        - b: save home
+        - x: save
+        - c: clear
+        - b: begin
+        - n: stop
+        - m: goto
+
+  - id: trans-cmd
+    path: trans_cmd.py
+    inputs:
+      key-qwenvl: dora-qwenvl/tick
+      key-keyboard: key-text/text
+    outputs:
+      - movec
+      - claw
+      - save
+      - clear
+      - begin
+      - stop
+      - goto
+
+  - id: arm
+    path: gen72.py
+    _unstable_deploy:
+      machine: pi
+    inputs:
+      movec: trans-cmd/movec
+      claw: trans-cmd/claw
+      save: trans-cmd/save
+      clear: trans-cmd/clear
+      begin: trans-cmd/begin
+      stop: trans-cmd/stop
+      goto: trans-cmd/goto
+    env:
+      ROBOT_IP: 192.168.1.18
+
+
+#  - id: chassis
+#    path: robot
+#    _unstable_deploy:
+#      machine: pi
+#    inputs:
+#      text: dora-qwenvl/tick

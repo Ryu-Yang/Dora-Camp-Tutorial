@@ -37,6 +37,7 @@ robot.Set_Modbus_Mode(1, 115200, 2, 2)
 
 joint_d = [0, 45, 0, -90, 0, 45, 0]
 robot.Movej_Cmd(joint_d, SPEED)
+robot.Write_Single_Register(1, 40000, 100, 1, 1)
 time.sleep(2)
 
 data = robot.Get_Current_Arm_State()  # 获取机械臂运动数据

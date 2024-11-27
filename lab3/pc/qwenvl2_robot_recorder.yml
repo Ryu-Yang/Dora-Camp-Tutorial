@@ -1,17 +1,3 @@
-# Run the following command on pc:
-#   pip install llama-factory-recorder
-#   pip install dora-qwenvl
-
-#   cargo install rerun-cli --locked
-#   cd dora\node-hub\dora-rerun
-#   cargo install --path .
-
-
-# Run the following command on pi:
-#   pip install opencv-python
-#   pip install opencv-video-capture
-
-
 nodes:
   - id: key-listener
     path: key_listener.py
@@ -68,8 +54,8 @@ nodes:
     outputs:
       - text
     env:
-      DEFAULT_QUESTION: Respond with arm left, arm right, arm up, arm down, open, close, to grab the bottle.
-      LLAMA_FACTORY_ROOT_PATH: ./recorder
+      DEFAULT_QUESTION: Respond with arm forward, arm backward, arm left, arm right, arm up, arm down, claw open, claw close, to grab the bottle.
+      LLAMA_FACTORY_ROOT_PATH: E:\Work\recorder
 
   - id: plot
     path: dora-rerun
@@ -87,45 +73,37 @@ nodes:
       RERUN_MEMORY_LIMIT: 50%
       README: |
         To control the robot, use the following keys:
-        - w: move forward
-        - s: move backward
-        - a: move left
-        - d: move right
-        - q: stop
-        - r: open gripper
-        - t: close gripper
-        - h: move arm left
-        - k: move arm right
+        - w: move chassis forward
+        - s: move chassis backward
+        - a: move chassis left
+        - d: move chassis right
+        - q: close gripper
+        - e: open gripper
+        - t: move arm forward
+        - g: move arm backward
+        - f: move arm left
+        - h: move arm right
+        - r: move arm up
         - y: move arm down
-        - i: move arm up
-        - u: move arm forward
-        - j: move arm backward
-        - v: go home
-        - b: save home
+        - x: save
+        - c: clear
+        - b: begin
+        - n: stop
+        - m: goto
 
-  - id: arm-interpolation
-    path: arm_interpolation.py
+
+  - id: trans-cmd
+    path: trans_cmd.py
     inputs:
-      keyboard: llama-factory-recorder/text
+      text: llama-factory-recorder/text
     outputs:
       - movec
-      - movej
       - claw
-      - go_to
       - save
-
-#  - id: trans-cmd
-#    path: trans_cmd.py
-#    inputs:
-#      keyboard: llama-factory-recorder/text
-#    outputs:
-#      - movec
-#      - claw
-#      - save
-#      - clear
-#      - begin
-#      - stop
-#      - goto
+      - clear
+      - begin
+      - stop
+      - goto
 
   - id: arm 
     path: gen72.py
@@ -141,6 +119,7 @@ nodes:
       goto: trans-cmd/goto
     env:
       ROBOT_IP: 192.168.1.18
+
 
   # - id: chassis
   #   path: robot
