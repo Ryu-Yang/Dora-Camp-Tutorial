@@ -26,6 +26,7 @@ nodes:
       IMAGE_WIDTH: 640
       IMAGE_HEIGHT: 480
       ENCODING: jpeg
+      FLIP: BOTH
 
   - id: camera2
     path: opencv-video-capture
@@ -40,6 +41,7 @@ nodes:
       IMAGE_WIDTH: 640
       IMAGE_HEIGHT: 480
       ENCODING: jpeg
+      FLIP: BOTH
 
   - id: llama-factory-recorder
     path: llama-factory-recorder
@@ -54,8 +56,8 @@ nodes:
     outputs:
       - text
     env:
-      DEFAULT_QUESTION: Respond with arm forward, arm backward, arm left, arm right, arm up, arm down, claw open, claw close, to grab the bottle.
-      LLAMA_FACTORY_ROOT_PATH: E:\Work\recorder
+      DEFAULT_QUESTION: Control the arm by responding with commands such as “arm left”, “arm right”, “claw open” and “claw close” to grab the bottle and place it into the blue box. If the claw is empty, first use it to grab the bottle. Once you confirm the bottle is in the claw, move it to the blue box. After confirming the bottle is in the tray, open the claw. Only respond with one command at a time.
+      LLAMA_FACTORY_ROOT_PATH: E:\Work\recorder\
 
   - id: plot
     path: dora-rerun
@@ -120,10 +122,9 @@ nodes:
     env:
       ROBOT_IP: 192.168.1.18
 
-
-  # - id: chassis
-  #   path: robot
-  #   _unstable_deploy:
-  #     machine: pi
-  #   inputs:
-  #     text: llama-factory-recorder/text
+  - id: chassis
+    path: robot
+    _unstable_deploy:
+      machine: pi
+    inputs:
+      text: llama-factory-recorder/text
