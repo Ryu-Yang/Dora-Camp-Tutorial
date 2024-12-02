@@ -1,34 +1,13 @@
-# Run the following command on pc:
-#   pip install llama-factory-recorder
-#   pip install dora-qwenvl
-#   # 不用这个conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia
-#   pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124 --default-timeout=3600
-#   pip install transformers
-#   pip install qwen-vl-utils
-#   pip install optimum
-#   pip install auto-gptq
-
-
-#   cargo install rerun-cli --locked
-#   cd dora\node-hub\dora-rerun
-#   cargo install --path .
-
-
-# Run the following command on pi:
-#   pip install opencv-python
-#   pip install opencv-video-capture
-
-
 nodes:
   - id: key-listener
-    path: key_listener.py
+    path: ../src/key_listener.py
     inputs:
       tick: dora/timer/millis/10
     outputs:
       - char
 
   - id: key-text
-    path: key_text.py
+    path: ../src/key_text.py
     inputs:
       keyboard: key-listener/char
     outputs:
@@ -65,7 +44,7 @@ nodes:
       FLIP: BOTH
 
   - id: dora-qwenvl
-    path: dora-qwenvl
+    path: ../src/dora_qwenvl.py
     inputs:
       image_1:
         source: camera1/image
@@ -74,9 +53,10 @@ nodes:
         source: camera2/image
         queue_size: 1
       tick: dora/timer/millis/4000
+#      text:  # 暂时不用，用来输入问题的
     outputs:
-      - text
       - tick
+#      - text # # 暂时不用，用来输出回答的
     env:
 #      DEFAULT_QUESTION: Control the arm and claw by responding with commands such as “arm forward,” “arm backward,” “arm left,” “arm right,” “arm up,” “arm down,” “claw open,” and “claw close” to grab the bottle and place it into the blue tray. If the claw is empty, first use it to grab the bottle. Once you confirm the bottle is in the claw, move it to the blue tray. After confirming the bottle is in the tray, open the claw. Only respond with one command at a time.
       DEFAULT_QUESTION: Control the arm by responding with commands such as “arm left”, “arm right”, “claw open” and “claw close” to grab the bottle and place it into the blue box. If the claw is empty, first use it to grab the bottle. Once you confirm the bottle is in the claw, move it to the blue box. After confirming the bottle is in the tray, open the claw. Only respond with one command at a time.
@@ -120,7 +100,7 @@ nodes:
         - m: goto
 
   - id: trans-cmd
-    path: trans_cmd.py
+    path: ../src/trans_cmd.py
     inputs:
       key-qwenvl: dora-qwenvl/tick
       key-keyboard: key-text/text
@@ -134,7 +114,7 @@ nodes:
       - goto
 
   - id: arm
-    path: gen72.py
+    path: ./src/gen72.py
     _unstable_deploy:
       machine: pi
     inputs:

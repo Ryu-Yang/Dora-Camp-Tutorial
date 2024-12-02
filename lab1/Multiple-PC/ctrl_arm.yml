@@ -1,27 +1,24 @@
-# Run on Pi
+# Run on PC
 
 nodes:
-  - id: opencv
-    path: ../src/dora_opencv.py
+  - id: key-listener
+    path: ../../src/key_listener.py
     inputs:
-      key-interval: dora/timer/millis/10
-      error-interval: dora/timer/millis/500
+      tick: dora/timer/millis/10
     outputs:
-      - error
-      - key
+      - char
 
   - id: key-text
-    path: ../src/key_text.py
+    path: ../../src/key_text.py
     inputs:
-      keyboard: opencv/key
+      keyboard: key-listener/char
     outputs:
       - text
 
   - id: trans-cmd
-    path: ../src/trans_cmd.py
+    path: ../../src/trans_cmd.py
     inputs:
       text: key-text/text
-      error: opencv/error
     outputs:
       - movec
       - claw
@@ -32,7 +29,9 @@ nodes:
       - goto
 
   - id: arm
-    path: ../src/gen72.py
+    path: ./src/gen72.py  # The file path on Pi
+    _unstable_deploy:
+      machine: pi
     inputs:
       movec: trans-cmd/movec
       claw: trans-cmd/claw

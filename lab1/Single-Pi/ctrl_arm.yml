@@ -1,22 +1,24 @@
+# Run on Pi
+
 nodes:
-  - id: keyboard-listener
-    path: keyboard.py
+  - id: key-listener
+    path: ../../src/key_listener.py
     inputs:
       tick: dora/timer/millis/10
     outputs:
       - char
 
-  - id: key-interpolation
-    path: key_interpolation.py
+  - id: key-text
+    path: ../../src/key_text.py
     inputs:
-      keyboard: keyboard-listener/char
+      keyboard: key-listener/char
     outputs:
       - text
 
   - id: trans-cmd
-    path: trans_cmd.py
+    path: ../../src/trans_cmd.py
     inputs:
-      text: key-interpolation/text
+      text: key-text/text
     outputs:
       - movec
       - claw
@@ -27,7 +29,7 @@ nodes:
       - goto
   
   - id: arm
-    path: gen72.py
+    path: ../../src/gen72.py
     inputs:
       movec: trans-cmd/movec
       claw: trans-cmd/claw
@@ -37,4 +39,4 @@ nodes:
       stop: trans-cmd/stop
       goto: trans-cmd/goto
     env:
-      ROBOT_IP: 192.168.1.18  # gen72 机械臂默认IP
+      ROBOT_IP: 192.168.1.18  # gen72 robotic arm default IP address

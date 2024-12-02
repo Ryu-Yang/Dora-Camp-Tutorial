@@ -1,27 +1,25 @@
+from dora import Node
 import pyarrow as pa
 from enum import Enum
-from dora import Node
 
 
 PID_X = 0.0004
 PID_Y = -0.0003
 
 class Action(Enum):
-    Xp      = ("arm Xp", "movec", [0.01, 0, 0, 0, 0, 0, 0.1])
-    Xn      = ("arm Xn", "movec", [-0.01, 0, 0, 0, 0, 0, 0.1])
-    Yp      = ("arm Yp", "movec", [0, 0.01, 0, 0, 0, 0, 0.1])
-    Yn      = ("arm Yn", "movec", [0, -0.01, 0, 0, 0, 0, 0.1])
-    Zp      = ("arm Zp", "movec", [0, 0, 0.01, 0, 0, 0, 0.1])
-    Zn      = ("arm Zn", "movec", [0, 0, -0.01, 0, 0, 0, 0.1])
-    take    = ("arm take", "claw", [0])
-    put     = ("arm put", "claw", [100])
-
-    save    = ("save", "save", [0])
-    clear   = ("clear", "clear", [0])
-
-    begin   = ("begin", "begin", [0])
-    stop    = ("stop", "stop", [0])
-    goto    = ("goto", "goto", [0])
+    FORWARD = ("arm forward",   "movec", [0.02, 0, 0, 0, 0, 0, 0.1])
+    BACK    = ("arm backward",  "movec", [-0.02, 0, 0, 0, 0, 0, 0.1])
+    LEFT    = ("arm left",      "movec", [0, -0.02, 0, 0, 0, 0, 0.1])
+    RIGHT   = ("arm right",     "movec", [0, 0.02, 0, 0, 0, 0, 0.1])
+    UP      = ("arm up",        "movec", [0, 0, -0.02, 0, 0, 0, 0.1])
+    DOWN    = ("arm down",      "movec", [0, 0, 0.02, 0, 0, 0, 0.1])
+    CLOSE   = ("claw close",    "claw", [0])
+    OPEN    = ("claw open",     "claw", [100])
+    SAVE    = ("save",          "save", [0])
+    CLEAR   = ("clear",         "clear", [0])
+    BEGIN   = ("begin",         "begin", [0])
+    STOP    = ("stop",          "stop", [0])
+    GOTO    = ("goto",          "goto", [0])
 
 
 node = Node()
