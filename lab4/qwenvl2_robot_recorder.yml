@@ -57,7 +57,7 @@ nodes:
       - text
     env:
       DEFAULT_QUESTION: Control the arm by responding with commands such as “arm left”, “arm right”, “claw open” and “claw close” to grab the bottle and place it into the blue box. If the claw is empty, first use it to grab the bottle. Once you confirm the bottle is in the claw, move it to the blue box. After confirming the bottle is in the tray, open the claw. Only respond with one command at a time.
-      LLAMA_FACTORY_ROOT_PATH: E:\Work\recorder\
+      LLAMA_FACTORY_ROOT_PATH: ../recorder
 
   - id: plot
     path: dora-rerun
