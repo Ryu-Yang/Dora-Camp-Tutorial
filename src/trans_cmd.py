@@ -26,7 +26,8 @@ node = Node()
 
 for event in node:
     if event["type"] == "INPUT":
-        if event["id"] == "text":
+        event_id = event["id"]
+        if event_id == "key-keyboard" or event_id == "key-qwenvl":
             text = event["value"][0].as_py()
             text = text.replace(".", "")
             text = text.replace(".", "")

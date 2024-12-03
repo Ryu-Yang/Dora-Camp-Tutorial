@@ -18,7 +18,7 @@ nodes:
   - id: trans-cmd
     path: ../../src/trans_cmd.py
     inputs:
-      text: key-text/text
+      key-keyboard: key-text/text
     outputs:
       - movec
       - claw
