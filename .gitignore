@@ -162,4 +162,5 @@ cython_debug/
 .idea/
 
 out/
-#data/*
+data/*
+# pose_library.json
