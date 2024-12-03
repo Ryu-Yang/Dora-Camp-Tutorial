@@ -43,3 +43,4 @@ nodes:
       goto: trans-cmd/goto
     env:
       ROBOT_IP: 192.168.1.18  # gen72 robotic arm default IP address
+      SAVED_POSE_PATH: ../recorder/pose_library.json # The relative path of pose_library.json that relative to this yaml file.

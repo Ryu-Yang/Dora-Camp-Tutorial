@@ -114,7 +114,7 @@ nodes:
       - goto
 
   - id: arm
-    path: ./src/gen72.py
+    path: ./src/gen72.py  # The relative path of gen72.py that relative to the path where you started the dora daemon on pi
     _unstable_deploy:
       machine: pi
     inputs:
@@ -127,6 +127,7 @@ nodes:
       goto: trans-cmd/goto
     env:
       ROBOT_IP: 192.168.1.18
+      SAVED_POSE_PATH: ./recorder/pose_library.json # The relative path of pose_library.json that relative to the path where you started the dora daemon on pi
 
 
 #  - id: chassis

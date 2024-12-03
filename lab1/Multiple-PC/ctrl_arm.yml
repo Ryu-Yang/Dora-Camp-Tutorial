@@ -29,7 +29,7 @@ nodes:
       - goto
 
   - id: arm
-    path: ./src/gen72.py  # The file path on Pi
+    path: ./src/gen72.py  # The relative path of gen72.py that relative to the path where you started the dora daemon on pi
     _unstable_deploy:
       machine: pi
     inputs:
