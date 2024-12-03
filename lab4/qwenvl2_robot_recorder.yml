@@ -121,6 +121,7 @@ nodes:
       goto: trans-cmd/goto
     env:
       ROBOT_IP: 192.168.1.18
+      SAVED_POSE_PATH: ./recorder/pose_library.json # The relative path of pose_library.json that relative to the path where you started the dora daemon on pi
 
   - id: chassis
     path: robot
