@@ -110,6 +110,7 @@ for event in node:
         contours = extract_contour(final_inRange_hsv)
         draw_img = find_target(contours,draw_img)
         final_img = draw_center(target_list,draw_img)
+        error_x, error_y = get_error(target_list, draw_img)
         cv2.imshow('final_img', final_img)
 
         if event["id"] == "key-interval":
@@ -122,7 +123,6 @@ for event in node:
                 node.send_output("key", pa.array([chr(key)]))
 
         if event["id"] == "error-interval":
-            error_x, error_y = get_error(target_list,draw_img)
             node.send_output("error", pa.array([error_x, error_y]))
 
 cv2.destroyAllWindows()      #关闭展示窗口
