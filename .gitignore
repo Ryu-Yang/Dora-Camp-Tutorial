@@ -163,5 +163,4 @@ cython_debug/
 
 out/
 data/
-data/*
 pose_library.json
