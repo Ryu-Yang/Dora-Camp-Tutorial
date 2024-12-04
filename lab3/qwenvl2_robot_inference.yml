@@ -52,7 +52,7 @@ nodes:
       image_2:
         source: camera2/image
         queue_size: 1
-      tick: dora/timer/millis/4000
+      tick: dora/timer/millis/1500  # 这个可以调整多久处理一帧，太快会导致处理不过来（产生延迟），图像与动作会不对应。
 #      text:  # 暂时不用，用来输入问题的
     outputs:
       - tick
@@ -62,8 +62,8 @@ nodes:
       DEFAULT_QUESTION: Control the arm by responding with commands such as “arm left”, “arm right”, “claw open” and “claw close” to grab the bottle and place it into the blue box. If the claw is empty, first use it to grab the bottle. Once you confirm the bottle is in the claw, move it to the blue box. After confirming the bottle is in the tray, open the claw. Only respond with one command at a time.
 #      DEFAULT_QUESTION: Control the arm by responding with commands such as “arm left”, “arm right”, "nothing". If you see red square turn arm right, or yellow square turn arm left. If you haven't seen the square with the color I mentioned, do nothing.
       USE_MODELSCOPE_HUB: True
-      MODEL_NAME_OR_PATH: E:\Repositories\Qwen2-VL-7B-Instruct-GPTQ-Int4
-      ADAPTER_PATH: E:\Work\LLaMA-Factory\my-qwen2_vl-7b-int4\lora\sft
+      MODEL_NAME_OR_PATH: E:\Dora-Camp-Tutorial-Saves\models\Qwen2-VL-2B-Instruct
+      ADAPTER_PATH: E:\Dora-Camp-Tutorial-Saves\adapter\Qwen2-VL-2B-Fine-Tuning-Grab-Bottle
 
   - id: plot
     path: dora-rerun
