@@ -6,6 +6,7 @@ stage: sft
 do_train: true
 finetuning_type: lora
 lora_target: all
+# flash_attn: fa2 # if you installed flash-attention2
 
 ### dataset
 dataset: dora_demo  # video: mllm_video_demo
