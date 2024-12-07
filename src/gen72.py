@@ -35,7 +35,7 @@ robot = Arm(72, ROBOT_IP)  # 创建实例
 robot.Set_Tool_Voltage(3)
 robot.Set_Modbus_Mode(1, 115200, 2, 2)
 
-joint_d = [0, 40, 0, -100, 0, 45, 0]
+joint_d = [0, 45, 0, -90, 0, 45, 0]
 robot.Movej_Cmd(joint_d, SPEED)
 robot.Write_Single_Register(1, 40000, 100, 1, 1)
 time.sleep(2)

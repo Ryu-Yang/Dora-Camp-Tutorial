@@ -13,8 +13,8 @@ class Action(Enum):
     RIGHT   = ("arm right",     "movec", [0, 0.02, 0, 0, 0, 0, 0.1])
     UP      = ("arm up",        "movec", [0, 0, -0.02, 0, 0, 0, 0.1])
     DOWN    = ("arm down",      "movec", [0, 0, 0.02, 0, 0, 0, 0.1])
-    # CLOSE   = ("claw close",    "claw", [0])
-    # OPEN    = ("claw open",     "claw", [100])
+    CLOSE   = ("claw close",    "claw", [0])
+    OPEN    = ("claw open",     "claw", [100])
     SAVE    = ("save",          "save", [0])
     CLEAR   = ("clear",         "clear", [0])
     BEGIN   = ("begin",         "begin", [0])
@@ -38,19 +38,19 @@ for event in node:
                     node.send_output(action.value[1], pa.array(action.value[2]))
                     print(f"""recieved:{action.value[0]}""")
 
-            if "claw close" in text:
-                if claw_state == 1:
-                    claw_state = 0
-                    DOWN = ("arm down", "movec", )
-                    node.send_output("movec", pa.array([0, 0, 0.06, 0, 0, 0, 0.1]))
-                    time.sleep(2)
-                    node.send_output("claw", pa.array([0]))
-                    time.sleep(2)
-                    node.send_output("movec", pa.array([0, 0, -0.06, 0, 0, 0, 0.1]))
-                    time.sleep(1)
-            if "claw open" in text:
-                claw_state = 1
-                node.send_output("claw", pa.array([100]))
+            # if "claw close" in text:
+            #     if claw_state == 1:
+            #         claw_state = 0
+            #         DOWN = ("arm down", "movec", )
+            #         node.send_output("movec", pa.array([0, 0, 0.05, 0, 0, 0, 0.1]))
+            #         time.sleep(2)
+            #         node.send_output("claw", pa.array([0]))
+            #         time.sleep(2)
+            #         node.send_output("movec", pa.array([0, 0, -0.05, 0, 0, 0, 0.1]))
+            #         time.sleep(1)
+            # if "claw open" in text:
+            #     claw_state = 1
+            #     node.send_output("claw", pa.array([100]))
 
         if event["id"] == "error":
             [error_x, error_y] =  event["value"].tolist()
