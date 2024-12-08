@@ -2,6 +2,8 @@ from dora import Node
 import pyarrow as pa
 
 
+recorder_flag = False
+
 node = Node()
 
 for event in node:
@@ -9,7 +11,10 @@ for event in node:
         if event["id"] == "keyboard":
             char = event["value"][0].as_py()
             print(f"""Keyboard recieved: {char}""")
-            if   char == "w":
+            if char == "p":
+                recorder_flag = not recorder_flag
+                node.send_output("recorder_flag", pa.array([recorder_flag]))
+            elif char == "w":
                 node.send_output("text", pa.array(["forward"]))
             elif char == "s":
                 node.send_output("text", pa.array(["backward"]))
@@ -43,3 +48,29 @@ for event in node:
                 node.send_output("text", pa.array(["stop"]))
             elif char == "m":
                 node.send_output("text", pa.array(["goto"]))
+
+            if recorder_flag:
+                if char == "w":
+                    node.send_output("truth", pa.array(["forward"]))
+                elif char == "s":
+                    node.send_output("truth", pa.array(["backward"]))
+                elif char == "d":
+                    node.send_output("truth", pa.array(["right"]))
+                elif char == "a":
+                    node.send_output("truth", pa.array(["left"]))
+                elif char == "q":
+                    node.send_output("truth", pa.array(["claw close"]))
+                elif char == "e":
+                    node.send_output("truth", pa.array(["claw open"]))
+                elif char == "t":
+                    node.send_output("truth", pa.array(["arm forward"]))
+                elif char == "g":
+                    node.send_output("truth", pa.array(["arm backward"]))
+                elif char == "f":
+                    node.send_output("truth", pa.array(["arm left"]))
+                elif char == "h":
+                    node.send_output("truth", pa.array(["arm right"]))
+                elif char == "r":
+                    node.send_output("truth", pa.array(["arm up"]))
+                elif char == "y":
+                    node.send_output("truth", pa.array(["arm down"]))

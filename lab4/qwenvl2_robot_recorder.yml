@@ -12,6 +12,8 @@ nodes:
       keyboard: key-listener/char
     outputs:
       - text
+      - truth
+      - recorder_flag
 
   - id: camera1
     path: opencv-video-capture
@@ -52,7 +54,7 @@ nodes:
       image_2:
         source: camera2/image
         queue_size: 1
-      ground_truth: key-text/text
+      ground_truth: key-text/truth
     outputs:
       - text
     env:

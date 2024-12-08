@@ -14,7 +14,7 @@ template: qwen2_vl
 cutoff_len: 2048
 max_samples: 2000
 overwrite_cache: true
-preprocessing_num_workers: 16
+preprocessing_num_workers: 8
 
 ### output
 output_dir: saves/Qwen2-VL-2B-Fine-Tuning-Grab-Bottle
