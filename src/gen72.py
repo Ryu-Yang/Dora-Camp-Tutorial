@@ -55,6 +55,21 @@ logger_.info(f"pose_library: {pose_library}")
 
 for event in node:
     if event["type"] == "INPUT":
+        if event["id"] == "movel":
+            [dx, dy, dz, drx, dry, drz, t] = event["value"].tolist()
+            # X轴方向
+            if dx != 0:
+                direction_x = 1 if dx > 0 else 0
+                robot.Pos_Teach_Cmd(0, direction_x, abs(dx), block=False)
+            # Y轴方向
+            if dy != 0:
+                direction_y = 1 if dy > 0 else 0
+                robot.Pos_Teach_Cmd(1, direction_y, abs(dy), block=False)
+            # Z轴方向
+            if dz != 0:
+                direction_z = 1 if dz > 0 else 0
+                robot.Pos_Teach_Cmd(2, direction_z, abs(dz), block=False)
+
         if event["id"] == "movec":
             [dx, dy, dz, drx, dry, drz, t] = event["value"].tolist()
 

@@ -20,6 +20,7 @@ nodes:
     inputs:
       key-keyboard: key-text/text
     outputs:
+      - movel
       - movec
       - claw
       - save
@@ -33,6 +34,7 @@ nodes:
     _unstable_deploy:
       machine: pi
     inputs:
+      movel: trans-cmd/movel
       movec: trans-cmd/movec
       claw: trans-cmd/claw
       save: trans-cmd/save

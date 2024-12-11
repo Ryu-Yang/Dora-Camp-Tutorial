@@ -21,6 +21,14 @@ class Action(Enum):
     STOP    = ("stop",          "stop", [0])
     GOTO    = ("goto",          "goto", [0])
 
+class Action1(Enum):
+    FORWARD = ("arm forward",   "movel", [10, 0, 0, 0, 0, 0, 0.1])
+    BACK    = ("arm backward",  "movel", [-10, 0, 0, 0, 0, 0, 0.1])
+    LEFT    = ("arm left",      "movel", [0, -10, 0, 0, 0, 0, 0.1])
+    RIGHT   = ("arm right",     "movel", [0, 10, 0, 0, 0, 0, 0.1])
+    UP      = ("arm up",        "movel", [0, 0, -10, 0, 0, 0, 0.1])
+    DOWN    = ("arm down",      "movel", [0, 0, 10, 0, 0, 0, 0.1])
+
 claw_state = 1
 
 node = Node()
@@ -35,7 +43,7 @@ for event in node:
             text = text.replace(".", "")
             text = text.replace(".", "")
 
-            for action in Action:
+            for action in Action1:
                 if action.value[0] in text:
                     node.send_output(action.value[1], pa.array(action.value[2]))
                     print(f"""recieved:{action.value[0]}""")
