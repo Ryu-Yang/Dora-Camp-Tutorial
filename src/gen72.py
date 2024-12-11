@@ -77,7 +77,7 @@ for event in node:
             cart_pose = [
                 cartesian_pose[key] for key in ["x", "y", "z", "rx", "ry", "rz"]
             ]
-            robot.Movel_Cmd(cart_pose, SPEED, block=False)
+            robot.Movel_Cmd(cart_pose, SPEED, block=False, trajectory_connect=1)
 
         elif event["id"] == "claw":
             [claw] = event["value"].tolist()

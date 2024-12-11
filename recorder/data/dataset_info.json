@@ -26,5 +26,19 @@
             "user_tag": "user",
             "assistant_tag": "assistant"
         }
+    },
+    "dora_demo_2": {
+        "file_name": "dora_demo_2.json",
+        "formatting": "sharegpt",
+        "columns": {
+            "messages": "messages",
+            "images": "images"
+        },
+        "tags": {
+            "role_tag": "role",
+            "content_tag": "content",
+            "user_tag": "user",
+            "assistant_tag": "assistant"
+        }
     }
 }

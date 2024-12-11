@@ -46,7 +46,7 @@ nodes:
       FLIP: BOTH
 
   - id: llama-factory-recorder
-    path: llama-factory-recorder
+    path: ../src/dora_llamafactory_recorder.py
     inputs:
       image_1:
         source: camera1/image
@@ -89,17 +89,17 @@ nodes:
         - h: move arm right
         - r: move arm up
         - y: move arm down
+        - z: wait
         - x: save
         - c: clear
         - b: begin
         - n: stop
         - m: goto
 
-
   - id: trans-cmd
     path: ../src/trans_cmd.py
     inputs:
-      key-keyboard: llama-factory-recorder/text
+      key-keyboard: key-text/text
     outputs:
       - movec
       - claw

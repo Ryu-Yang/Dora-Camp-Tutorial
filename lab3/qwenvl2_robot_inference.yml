@@ -63,7 +63,7 @@ nodes:
 #      DEFAULT_QUESTION: Control the arm by responding with commands such as “arm left”, “arm right”, "nothing". If you see red square turn arm right, or yellow square turn arm left. If you haven't seen the square with the color I mentioned, do nothing.
       USE_MODELSCOPE_HUB: True
       MODEL_NAME_OR_PATH: E:\Dora-Camp-Tutorial-Saves\models\Qwen2-VL-2B-Instruct
-      ADAPTER_PATH: E:\Dora-Camp-Tutorial-Saves\adapter\Qwen2-VL-2B-Fine-Tuning-Grab-Bottle
+      ADAPTER_PATH: E:\Dora-Camp-Tutorial-Saves\adapter_3\Qwen2-VL-2B-Fine-Tuning-Grab-Bottle
 
   - id: plot
     path: dora-rerun
@@ -93,6 +93,7 @@ nodes:
         - h: move arm right
         - r: move arm up
         - y: move arm down
+        - z: wait
         - x: save
         - c: clear
         - b: begin

@@ -50,7 +50,9 @@ for event in node:
                 node.send_output("text", pa.array(["goto"]))
 
             if recorder_flag:
-                if char == "w":
+                if char == "z":
+                    node.send_output("truth", pa.array(["wait"]))
+                elif char == "w":
                     node.send_output("truth", pa.array(["forward"]))
                 elif char == "s":
                     node.send_output("truth", pa.array(["backward"]))

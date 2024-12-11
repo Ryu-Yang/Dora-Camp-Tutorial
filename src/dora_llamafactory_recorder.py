@@ -207,8 +207,10 @@ def main():
                 node.send_output(
                     "text",
                     pa.array([ground_truth]),
-                    metadata,
                 )
 
         elif event_type == "ERROR":
             raise RuntimeError(event["error"])
+
+if __name__ == "__main__":
+    main()
