@@ -8,9 +8,10 @@ node = Node()
 
 for event in node:
     if event["type"] == "INPUT":
-        if event["id"] == "keyboard":
+        if event["id"] == "key-press":
             char = event["value"][0].as_py()
-            print(f"""Keyboard recieved: {char}""")
+            print(f"""key-press recieved: {char}""")
+
             if char == "p":
                 recorder_flag = not recorder_flag
                 node.send_output("recorder_flag", pa.array([recorder_flag]))
@@ -76,3 +77,18 @@ for event in node:
                     node.send_output("truth", pa.array(["arm up"]))
                 elif char == "y":
                     node.send_output("truth", pa.array(["arm down"]))
+
+        if event["id"] == "key-release":
+            char = event["value"][0].as_py()
+            if char == "t":
+                node.send_output("text", pa.array(["arm stop"]))
+            elif char == "g":
+                node.send_output("text", pa.array(["arm stop"]))
+            elif char == "f":
+                node.send_output("text", pa.array(["arm stop"]))
+            elif char == "h":
+                node.send_output("text", pa.array(["arm stop"]))
+            elif char == "r":
+                node.send_output("text", pa.array(["arm stop"]))
+            elif char == "y":
+                node.send_output("text", pa.array(["arm stop"]))

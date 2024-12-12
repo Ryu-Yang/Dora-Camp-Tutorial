@@ -22,12 +22,13 @@ class Action(Enum):
     GOTO    = ("goto",          "goto", [0])
 
 class Action1(Enum):
-    FORWARD = ("arm forward",   "movel", [10, 0, 0, 0, 0, 0, 0.1])
-    BACK    = ("arm backward",  "movel", [-10, 0, 0, 0, 0, 0, 0.1])
-    LEFT    = ("arm left",      "movel", [0, -10, 0, 0, 0, 0, 0.1])
-    RIGHT   = ("arm right",     "movel", [0, 10, 0, 0, 0, 0, 0.1])
-    UP      = ("arm up",        "movel", [0, 0, -10, 0, 0, 0, 0.1])
-    DOWN    = ("arm down",      "movel", [0, 0, 10, 0, 0, 0, 0.1])
+    FORWARD = ("arm forward",   "movel", [10, 0, 0, 0, 0, 0, 1])
+    BACK    = ("arm backward",  "movel", [-10, 0, 0, 0, 0, 0, 1])
+    LEFT    = ("arm left",      "movel", [0, -10, 0, 0, 0, 0, 1])
+    RIGHT   = ("arm right",     "movel", [0, 10, 0, 0, 0, 0, 1])
+    UP      = ("arm up",        "movel", [0, 0, -10, 0, 0, 0, 1])
+    DOWN    = ("arm down",      "movel", [0, 0, 10, 0, 0, 0, 1])
+    STOP    = ("arm stop",      "mstop", [0])
 
 claw_state = 1
 

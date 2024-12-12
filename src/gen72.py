@@ -60,15 +60,17 @@ for event in node:
             # X轴方向
             if dx != 0:
                 direction_x = 1 if dx > 0 else 0
-                robot.Pos_Teach_Cmd(0, direction_x, abs(dx), block=False)
+                robot.Pos_Teach_Cmd(0, direction = direction_x, v = abs(dx), block=False)
             # Y轴方向
             if dy != 0:
                 direction_y = 1 if dy > 0 else 0
-                robot.Pos_Teach_Cmd(1, direction_y, abs(dy), block=False)
+                robot.Pos_Teach_Cmd(1, direction = direction_y, v = abs(dy), block=False)
             # Z轴方向
             if dz != 0:
                 direction_z = 1 if dz > 0 else 0
-                robot.Pos_Teach_Cmd(2, direction_z, abs(dz), block=False)
+                robot.Pos_Teach_Cmd(2, direction = direction_z, v = abs(dz), block=False)
+        if event["id"] == "mstop":
+            robot.Teach_Stop_Cmd(block=False)
 
         if event["id"] == "movec":
             [dx, dy, dz, drx, dry, drz, t] = event["value"].tolist()
